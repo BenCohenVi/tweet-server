@@ -1,15 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Tweet {
+export class Like {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: "text" })
-  textContent: string;
-
   @Column()
   username: string;
+
+  @Column()
+  post_id: number;
 
   @Column({ type: "timestamptz" })
   timestamp: Date;
