@@ -1,21 +1,21 @@
 import {
+  Column,
   Entity,
   PrimaryGeneratedColumn,
-  Column,
   CreateDateColumn,
   BaseEntity,
 } from "typeorm";
 
-@Entity({ name: "tweets" })
-export class Tweet extends BaseEntity {
+@Entity({ name: "likes" })
+export class Like extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   username: string;
 
-  @Column({ type: "text" })
-  textContent: string;
+  @Column()
+  post_id: number;
 
   @Column()
   @CreateDateColumn({ type: "timestamptz" })

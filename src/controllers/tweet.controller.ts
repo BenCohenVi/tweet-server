@@ -8,4 +8,9 @@ export default class TweetController {
     const tweet = Tweet.create({ username, textContent });
     return await tweet.save();
   };
+
+  static isExists = async (tweetId: number): Promise<boolean> => {
+    const retrievedTweet = await Tweet.findOne(tweetId);
+    return retrievedTweet ? true : false;
+  };
 }
