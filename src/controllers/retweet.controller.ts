@@ -1,6 +1,10 @@
 import { ReTweet } from "../models/retweet.model";
 
 export default class RetweetController {
+  static getAll = async (): Promise<ReTweet[]> => {
+    return await ReTweet.find();
+  };
+
   static getRetweetsCount = async (tweetId: number): Promise<number> => {
     return await ReTweet.count({ post_id: tweetId });
   };

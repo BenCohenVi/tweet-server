@@ -5,6 +5,10 @@ export default class TweetController {
     return await Tweet.find();
   };
 
+  static getTweet = async (tweetId: number): Promise<Tweet | undefined> => {
+    return await Tweet.findOne(tweetId);
+  };
+
   static createTweet = async (
     username: string,
     textContent: string
