@@ -1,4 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+} from "typeorm";
 
 @Entity()
 export class Tweet {
@@ -11,6 +16,7 @@ export class Tweet {
   @Column()
   username: string;
 
-  @Column({ type: "timestamptz" })
+  @Column()
+  @CreateDateColumn({ type: "timestamptz" })
   timestamp: Date;
 }
