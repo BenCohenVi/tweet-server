@@ -1,6 +1,10 @@
 import { Tweet } from "../models/tweet.model";
 
 export default class TweetController {
+  static getAll = async (): Promise<Tweet[]> => {
+    return await Tweet.find();
+  };
+
   static createTweet = async (
     username: string,
     textContent: string

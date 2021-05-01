@@ -5,12 +5,28 @@ import TweetController from "../controllers/tweet.controller";
 
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.get("/", async (_req, res) => {
+  try {
+    const allTweets = await await TweetController.getAll();
+    const allTweetsWithMetadata = await Promise.all(
+      allTweets.map(async (tweet) =>
+        Object.assign(tweet, {
+          likes_count: await LikeController.getLikesCount(tweet.id),
+          retweets_count: await RetweetController.getRetweetsCount(tweet.id),
+        })
+      )
+    );
+    res.send(allTweetsWithMetadata);
+  } catch {
+    res.send("couldn't get all tweets");
+  }
+});
+
+router.post("/", async (req, res) => {
   try {
     const { username, content } = req.body;
-    TweetController.createTweet(username, content).then((createdTweet) =>
-      res.send(`created tweet, id: ${createdTweet.id}`)
-    );
+    const createdTweet = await TweetController.createTweet(username, content);
+    res.send(`created tweet, id: ${createdTweet.id}`);
   } catch {
     res.status(300).send("failed to created tweet");
   }
