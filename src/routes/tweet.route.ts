@@ -1,5 +1,6 @@
 import express from "express";
 import LikeController from "../controllers/like.controller";
+import RetweetController from "../controllers/retweet.controller";
 import TweetController from "../controllers/tweet.controller";
 
 const router = express.Router();
@@ -20,14 +21,32 @@ router.post("/:id/likes", async (req, res) => {
     const { username } = req.body;
     const tweetId = Number(req.params.id);
     if (await TweetController.isExists(tweetId)) {
-      LikeController.addLike(username, tweetId).then((addedLike) =>
-        res.send(`added like, id: ${addedLike.id}`)
-      );
+      LikeController.addLike(username, tweetId)
+        .then((addedLike) => res.send(`added like, id: ${addedLike.id}`))
+        .catch((error) => res.send(error));
     } else {
       res.send("post_id doesn't exist");
     }
   } catch {
     res.status(300).send("failed to add like");
+  }
+});
+
+router.post("/:id/retweet", async (req, res) => {
+  try {
+    const { username } = req.body;
+    const tweetId = Number(req.params.id);
+    if (await TweetController.isExists(tweetId)) {
+      RetweetController.addRetweet(username, tweetId)
+        .then((addedRetweet) =>
+          res.send(`added retweet, id: ${addedRetweet.id}`)
+        )
+        .catch((error) => res.send(error));
+    } else {
+      res.send("post_id doesn't exist");
+    }
+  } catch {
+    res.status(300).send("failed to add retweet");
   }
 });
 
