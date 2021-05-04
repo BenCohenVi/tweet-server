@@ -8,15 +8,7 @@ const router = express.Router();
 router.get("/", async (_req, res) => {
   try {
     const allTweets = await await TweetController.getAll();
-    const allTweetsWithMetadata = await Promise.all(
-      allTweets.map(async (tweet) =>
-        Object.assign(tweet, {
-          likes_count: await LikeController.getLikesCount(tweet.id),
-          retweets_count: await RetweetController.getRetweetsCount(tweet.id),
-        })
-      )
-    );
-    res.send(allTweetsWithMetadata);
+    res.send(allTweets);
   } catch {
     res.send("couldn't get all tweets");
   }
@@ -36,8 +28,9 @@ router.post("/:id/likes", async (req, res) => {
   try {
     const { username } = req.body;
     const tweetId = Number(req.params.id);
-    if (await TweetController.isExists(tweetId)) {
-      LikeController.addLike(username, tweetId)
+    const tweet = await TweetController.getTweet(tweetId);
+    if (tweet != undefined) {
+      LikeController.addLike(username, tweet)
         .then((addedLike) => res.send(`added like, id: ${addedLike.id}`))
         .catch((error) => res.send(error));
     } else {
@@ -52,8 +45,9 @@ router.post("/:id/retweet", async (req, res) => {
   try {
     const { username } = req.body;
     const tweetId = Number(req.params.id);
-    if (await TweetController.isExists(tweetId)) {
-      RetweetController.addRetweet(username, tweetId)
+    const tweet = await TweetController.getTweet(tweetId);
+    if (tweet != undefined) {
+      RetweetController.addRetweet(username, tweet)
         .then((addedRetweet) =>
           res.send(`added retweet, id: ${addedRetweet.id}`)
         )

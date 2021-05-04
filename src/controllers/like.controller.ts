@@ -1,12 +1,9 @@
 import { Like } from "../models/like.model";
+import { Tweet } from "../models/tweet.model";
 
 export default class LikeController {
-  static getLikesCount = async (tweetId: number): Promise<number> => {
-    return await Like.count({ post_id: tweetId });
-  };
-
-  static addLike = async (username: string, tweetId: number): Promise<Like> => {
-    const like = Like.create({ username, post_id: tweetId });
+  static addLike = async (username: string, tweet: Tweet): Promise<Like> => {
+    const like = Like.create({ username, post: tweet });
     return await like.save();
   };
 }

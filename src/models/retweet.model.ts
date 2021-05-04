@@ -4,7 +4,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  ManyToOne,
 } from "typeorm";
+import { Tweet } from "./tweet.model";
 
 @Entity({ name: "retweets" })
 export class ReTweet extends BaseEntity {
@@ -14,8 +16,8 @@ export class ReTweet extends BaseEntity {
   @Column()
   username: string;
 
-  @Column()
-  post_id: number;
+  @ManyToOne(() => Tweet, (post) => post.retweets)
+  post: Tweet;
 
   @Column()
   @CreateDateColumn({ type: "timestamptz" })

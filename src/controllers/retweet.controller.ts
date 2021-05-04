@@ -1,19 +1,16 @@
 import { ReTweet } from "../models/retweet.model";
+import { Tweet } from "../models/tweet.model";
 
 export default class RetweetController {
   static getAll = async (): Promise<ReTweet[]> => {
-    return await ReTweet.find();
-  };
-
-  static getRetweetsCount = async (tweetId: number): Promise<number> => {
-    return await ReTweet.count({ post_id: tweetId });
+    return await ReTweet.find({ relations: ["post"] });
   };
 
   static addRetweet = async (
     username: string,
-    tweetId: number
+    tweet: Tweet
   ): Promise<ReTweet> => {
-    const retweet = ReTweet.create({ username, post_id: tweetId });
+    const retweet = ReTweet.create({ username, post: tweet });
     return await retweet.save();
   };
 }

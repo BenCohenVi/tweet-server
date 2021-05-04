@@ -2,7 +2,7 @@ import { Tweet } from "../models/tweet.model";
 
 export default class TweetController {
   static getAll = async (): Promise<Tweet[]> => {
-    return await Tweet.find();
+    return await Tweet.find({ relations: ["likes", "retweets"] });
   };
 
   static getTweet = async (tweetId: number): Promise<Tweet | undefined> => {
@@ -15,10 +15,5 @@ export default class TweetController {
   ): Promise<Tweet> => {
     const tweet = Tweet.create({ username, textContent });
     return await tweet.save();
-  };
-
-  static isExists = async (tweetId: number): Promise<boolean> => {
-    const retrievedTweet = await Tweet.findOne(tweetId);
-    return retrievedTweet ? true : false;
   };
 }
