@@ -7,10 +7,19 @@ const router = express.Router();
 
 router.get("/", async (_req, res) => {
   try {
-    const allTweets = await await TweetController.getAll();
-    res.send(allTweets);
-  } catch {
+    const tweets = await TweetController.getAll();
+    const formattedTweets = tweets.map((tweet) => {
+      const { likes, retweets, ...tweetData } = tweet;
+      return {
+        ...tweetData,
+        likes_count: likes.length,
+        retweets_count: retweets.length,
+      };
+    });
+    res.send(formattedTweets);
+  } catch (error) {
     res.send("couldn't get all tweets");
+    console.log(error);
   }
 });
 

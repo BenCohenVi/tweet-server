@@ -5,8 +5,17 @@ const router = express.Router();
 
 router.get("/", async (_req, res) => {
   try {
-    const allRetweets = await RetweetController.getAll();
-    res.send(allRetweets);
+    const retweets = await RetweetController.getAll();
+    const formattedRetweets = retweets.map((retweet) => {
+      const { post, ...retweetData } = retweet;
+      return {
+        ...retweetData,
+        tweet_id: post.id,
+        tweet_user: post.username,
+        tweet_content: post.textContent,
+      };
+    });
+    res.send(formattedRetweets);
   } catch {
     res.send("couldn't get all retweets");
   }
