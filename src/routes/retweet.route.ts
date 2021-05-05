@@ -16,8 +16,9 @@ router.get("/", async (_req, res) => {
       };
     });
     res.send(formattedRetweets);
-  } catch {
+  } catch (error) {
     res.send("couldn't get all retweets");
+    console.log(error);
   }
 });
 

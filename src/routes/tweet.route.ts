@@ -28,8 +28,9 @@ router.post("/", async (req, res) => {
     const { username, content } = req.body;
     const createdTweet = await TweetController.createTweet(username, content);
     res.send(`created tweet, id: ${createdTweet.id}`);
-  } catch {
+  } catch (error) {
     res.status(300).send("failed to created tweet");
+    console.log(error);
   }
 });
 
@@ -45,8 +46,9 @@ router.post("/:id/likes", async (req, res) => {
     } else {
       res.send("post_id doesn't exist");
     }
-  } catch {
+  } catch (error) {
     res.status(300).send("failed to add like");
+    console.log(error);
   }
 });
 
@@ -64,8 +66,9 @@ router.post("/:id/retweet", async (req, res) => {
     } else {
       res.send("post_id doesn't exist");
     }
-  } catch {
+  } catch (error) {
     res.status(300).send("failed to add retweet");
+    console.log(error);
   }
 });
 
